@@ -9,14 +9,13 @@ function BackButton() {
   useEffect(() => {
     const fullScreenUI = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
-    const image = GUI.Button.CreateImageOnlyButton(
-      "button",
-      "model/backButton.png"
-    );
+    const image = GUI.Button.CreateImageOnlyButton("button", "model/home.png");
 
-    image.width = 0.05;
-    image.height = 0.12;
+    image.width = 0.03;
+    image.height = 0.06;
     image.thickness = 0;
+    image.paddingTop = "10px";
+    image.paddingLeft = "10px";
     image.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
     image.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
 
