@@ -104,11 +104,7 @@ const onSceneReady = (scene: any, name: string) => {
   }
 
   if (name === "video") {
-    camera = new UniversalCamera(
-      "UniversalCamera",
-      new Vector3(0, 0, -30),
-      scene
-    );
+    camera = new UniversalCamera("videoCam", new Vector3(0, 0, -30), scene);
 
     const light = new HemisphericLight("light", new Vector3(0, 1, 0), scene);
     light.intensity = 1;
@@ -119,7 +115,7 @@ const onSceneReady = (scene: any, name: string) => {
       "birdsCam",
       (4 * Math.PI) / 4,
       -0.4 + Math.PI / 1.99,
-      5.5,
+      12,
       Vector3.Zero()
     )!;
     camera.wheelDeltaPercentage = 0.01;

@@ -3,6 +3,7 @@ import { Suspense, useState } from "react";
 import DescriptionBlock from "../components/DescriptionBlock";
 import ModelCollection from "../components/ModelCollection";
 import SceneComponent from "../components/Scene";
+import Birds from "../components/Birds";
 
 function Main() {
   const [isShow, setIsShow] = useState(false);
@@ -20,6 +21,7 @@ function Main() {
       <SceneComponent componentName={"modelCollection"} />
       <Suspense fallback={null}>
         <ModelCollection onClick={descriptionShowHandler} />
+        <Birds />
       </Suspense>
       <DescriptionBlock path={"/fpv"} isShow={isShow} />
     </>

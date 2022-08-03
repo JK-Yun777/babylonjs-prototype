@@ -1,23 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import { MeshBuilder, SceneLoader, Vector3 } from "@babylonjs/core";
+import { SceneLoader, Vector3 } from "@babylonjs/core";
 import "@babylonjs/loaders";
-import SceneComponent, { camera, scene } from "./Scene";
 
-export function Bird(props: any) {
-  const [start] = useState(() => Math.random() * 2);
-  const [positionZ, setPositionZ] = useState(0);
+import { scene } from "./Scene";
 
+function Birds() {
   useEffect(() => {
-    let bird;
-    let speed = bird === "stork" ? 0.25 : bird === "flamingo" ? 0.5 : 5;
-    let factor =
-      bird === "stork"
-        ? 0.5 + Math.random()
-        : bird === "flamingo"
-        ? 0.25 + Math.random()
-        : 1 + Math.random() - 0.5;
-    const delta = scene.getEngine();
     SceneLoader.ImportMesh(
       "",
       "model/",
@@ -25,71 +14,81 @@ export function Bird(props: any) {
       scene,
       function (meshes, particleSystems, skeletons, animationGroups) {
         const mesh = meshes[0];
-        mesh.position.z = positionZ;
+        mesh.scaling.scaleInPlace(0.03);
+        mesh.position = new Vector3(-1, 1.5, -5);
 
-        console.log(mesh.position.z);
-        // mesh.position.z +=
-        // (10 / 60) * Math.PI * 2 * (delta.getDeltaTime() / 1000);
+        let distance = 0;
+        let step = 0.015;
 
         scene.onBeforeRenderObservable.add(() => {
-          if (mesh.rotation.y === 0) {
-            mesh.position.z +=
-              (10 / 60) * Math.PI * 2 * (delta.getDeltaTime() / 1000);
-          }
+          mesh.movePOV(0, 0, step);
+          distance += step;
 
-          if (mesh.position.z > 5) {
-            // mesh.rotation = new Vector3(0, 0.1, 0);
-            mesh.rotate(new Vector3(0, 0.1, 0), delta.getDeltaTime() / 1000);
+          if (distance > 2.5) {
+            mesh.rotate(new Vector3(0, -1, 0), 0.2);
+            distance--;
           }
-
-          if (mesh.rotation.y === 0.1) {
-            console.log("2222");
-            mesh.position.z -= 0.03;
-            console.log(mesh.position.z);
-          }
-          // mesh.position.y += 0.01;
-          // mesh.rotation.y +=
-          //   Math.sin((delta.getDeltaTime() * 0.5 + Math.random()) / 2) *
-          //   Math.cos((delta.getDeltaTime() * 0.5 + Math.random()) / 2) *
-          //   1.5;
         });
       }
     );
+
+    SceneLoader.ImportMesh(
+      "",
+      "model/",
+      "parrot.glb",
+      scene,
+      function (meshes, particleSystems, skeletons, animationGroups) {
+        const mesh = meshes[0];
+        mesh.scaling.scaleInPlace(0.03);
+        mesh.position = new Vector3(-5, 1.5, 2);
+        mesh.rotation = new Vector3(0, -0.7, 0);
+
+        let distance = 0;
+        let step = 0.015;
+
+        scene.onBeforeRenderObservable.add(() => {
+          mesh.movePOV(0, 0, step);
+          distance += step;
+
+          if (distance > 2.5) {
+            mesh.rotate(new Vector3(0, 1, 0), 0.1);
+            distance--;
+          }
+        });
+      }
+    );
+
+    SceneLoader.ImportMesh(
+      "",
+      "model/",
+      "flamingo.glb",
+      scene,
+      function (meshes, particleSystems, skeletons, animationGroups) {
+        const mesh = meshes[0];
+        mesh.scaling.scaleInPlace(0.03);
+        mesh.position = new Vector3(-3, 1.7, 5);
+        mesh.rotation = new Vector3(0, 0, 0);
+
+        let distance = 0;
+        let step = 0.015;
+
+        scene.onBeforeRenderObservable.add(() => {
+          mesh.movePOV(0, 0, step);
+          distance += step;
+
+          if (distance > 2.5) {
+            mesh.rotate(new Vector3(0, -1, 0), 0.2);
+            distance--;
+          }
+        });
+      }
+    );
+
+    return () => {
+      scene.dispose();
+    };
   }, []);
   return null;
 }
 
-// export function Birds() {
-//   return (
-//     <>
-//       {new Array(1).fill(0).map((_, i) => {
-//         const x =
-//           (20 + Math.random() * 80) * (Math.round(Math.random()) ? -1 : 1);
-//         const y = -10 + Math.random() * 20;
-//         const z = -5 + Math.random() * 10;
-//         const bird = ["stork", "parrot", "flamingo"][
-//           Math.round(Math.random() * 2)
-//         ];
-//         let speed = bird === "stork" ? 0.25 : bird === "flamingo" ? 0.5 : 5;
-//         let factor =
-//           bird === "stork"
-//             ? 0.5 + Math.random()
-//             : bird === "flamingo"
-//             ? 0.25 + Math.random()
-//             : 1 + Math.random() - 0.5;
-//         return (
-//           <>
-//             <Bird
-//               key={i}
-//               position={[x, y, z]}
-//               rotation={[0, x > 0 ? Math.PI : 0, 0]}
-//               speed={speed}
-//               factor={factor}
-//               url={`/${bird}.glb`}
-//             />
-//           </>
-//         );
-//       })}
-//     </>
-//   );
-// }
+export default Birds;

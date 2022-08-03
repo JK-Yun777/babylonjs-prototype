@@ -5,7 +5,7 @@ import Sub from "./pages/Sub";
 import Third from "./pages/Third";
 import MainScene from "./components/MainScene";
 import Video from "./components/Video";
-import Fourth from "./pages/Fourth";
+
 function App() {
   return (
     <>
@@ -16,7 +16,6 @@ function App() {
           <Route path="/door" exact component={Third} />
           <Route path="/main" exact component={MainScene} />
           <Route path="/video" exact component={Video} />
-          <Route path="/birds" exact component={Fourth} />
         </Switch>
       </BrowserRouter>
     </>
