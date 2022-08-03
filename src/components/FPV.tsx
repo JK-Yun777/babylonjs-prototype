@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 
 import { SceneLoader, GlowLayer, Vector3, Animation } from "@babylonjs/core";
 import "@babylonjs/loaders";
-import * as GUI from "@babylonjs/gui";
 
 import {
   initializeKeyboardInput,
@@ -13,6 +12,8 @@ import {
 import { scene, camera, canvasEl, engine } from "./Scene";
 
 function FPV(): React.ReactElement | null {
+  const history = useHistory();
+
   useEffect(() => {
     const loadingScreen = new CustomLoadingScreen();
     engine.loadingScreen = loadingScreen;
@@ -28,26 +29,6 @@ function FPV(): React.ReactElement | null {
       function (scene: any) {
         scene.executeWhenReady(function (newMeshes: any) {
           engine.hideLoadingUI();
-
-          const fullScreenUI =
-            GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-
-          const image = GUI.Button.CreateImageOnlyButton(
-            "button",
-            "model/backButton.png"
-          );
-
-          image.width = 0.05;
-          image.height = 0.12;
-          image.thickness = 0;
-          image.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
-          image.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-
-          fullScreenUI.addControl(image);
-
-          image.onPointerClickObservable.add(() => {
-            window.location.replace("/");
-          });
 
           initializeKeyboardInput(scene, camera);
           initializeMouseInput(scene, camera, canvasEl);
@@ -128,8 +109,6 @@ function FPV(): React.ReactElement | null {
       scene.dispose();
     };
   }, []);
-
-  const history = useHistory();
 
   useEffect(() => {
     return history.listen((location) => {

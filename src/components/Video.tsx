@@ -17,7 +17,9 @@ import {
 import "@babylonjs/loaders";
 import * as GUI from "@babylonjs/gui";
 
-import SceneComponent, { scene, camera } from "./Scene";
+import { CustomLoadingScreen } from "../utils";
+import SceneComponent, { scene, camera, engine } from "./Scene";
+import BackButton from "./BackButton";
 
 function getVideoThumbnail(videoPlayer: any, seekTo = 0) {
   return new Promise((resolve, reject) => {
@@ -58,6 +60,7 @@ function Video(): React.ReactElement | null {
       { width: 30, height: 15, sideOrientation: Mesh.DOUBLESIDE },
       scene
     );
+
     TV.position = new Vector3(0, 0, 20);
     TV.rotation = new Vector3((-2 * Math.PI) / 2, 0, 0);
     camera.lockedTarget = TV;
@@ -282,7 +285,12 @@ function Video(): React.ReactElement | null {
     });
   }, []);
 
-  return <SceneComponent componentName={"video"} />;
+  return (
+    <>
+      <SceneComponent componentName={"video"} />
+      <BackButton />
+    </>
+  );
 }
 
 export default Video;

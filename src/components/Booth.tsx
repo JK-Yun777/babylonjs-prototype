@@ -14,7 +14,7 @@ import "@babylonjs/loaders";
 import Hls from "hls.js";
 
 import { CustomLoadingScreen } from "../utils";
-import { scene, engine, camera } from "./Scene";
+import { scene, engine } from "./Scene";
 
 function Booth() {
   useEffect(() => {
@@ -30,6 +30,7 @@ function Booth() {
       function (meshes, particleSystems, skeletons, animationGroups) {
         scene.executeWhenReady(() => {
           engine.hideLoadingUI();
+
           const booth = meshes[0];
           booth.scaling.scaleInPlace(0.1);
           booth.position = new Vector3(-2, 1.75, 2.2);

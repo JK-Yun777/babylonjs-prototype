@@ -164,6 +164,9 @@ function ModelCollection(props: any): React.ReactElement | null {
       camera.lowerRadiusLimit = 1.5;
     }
 
+    let isZoomInClicked = false;
+    let currentTarget = "";
+
     // Add roomWithoutPlane model
     SceneLoader.ImportMesh(
       "",
@@ -180,9 +183,13 @@ function ModelCollection(props: any): React.ReactElement | null {
         meshA.actionManager
           .registerAction(
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
-              setIsZoomed((isZoomed) => !isZoomed);
-              setTarget("room");
-              props.onClick({ value: true, path: "room" });
+              if (!isZoomInClicked) {
+                setIsZoomed((isZoomed) => !isZoomed);
+                setTarget("room");
+                props.onClick({ value: true, path: "room" });
+                isZoomInClicked = true;
+                currentTarget = "room";
+              }
             })
           )!
           .then(
@@ -190,10 +197,14 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                setIsZoomed((isZoomed) => !isZoomed);
-                setIsReturned(true);
-                setTarget("room");
-                props.onClick(false);
+                if (currentTarget === "room") {
+                  setIsZoomed((isZoomed) => !isZoomed);
+                  setIsReturned(true);
+                  setTarget("room");
+                  props.onClick(false);
+                  currentTarget = "";
+                  isZoomInClicked = false;
+                }
               }),
             ])
           );
@@ -203,9 +214,13 @@ function ModelCollection(props: any): React.ReactElement | null {
         meshB.actionManager
           .registerAction(
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
-              setIsZoomed((isZoomed) => !isZoomed);
-              setTarget("room");
-              props.onClick({ value: true, path: "room" });
+              if (!isZoomInClicked) {
+                setIsZoomed((isZoomed) => !isZoomed);
+                setTarget("room");
+                props.onClick({ value: true, path: "room" });
+                isZoomInClicked = true;
+                currentTarget = "room";
+              }
             })
           )!
           .then(
@@ -213,10 +228,14 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                setIsZoomed((isZoomed) => !isZoomed);
-                setIsReturned(true);
-                setTarget("room");
-                props.onClick(false);
+                if (currentTarget === "room") {
+                  setIsZoomed((isZoomed) => !isZoomed);
+                  setIsReturned(true);
+                  setTarget("room");
+                  props.onClick(false);
+                  currentTarget = "";
+                  isZoomInClicked = false;
+                }
               }),
             ])
           );
@@ -239,9 +258,13 @@ function ModelCollection(props: any): React.ReactElement | null {
         meshA.actionManager
           .registerAction(
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
-              setIsZoomed((isZoomed) => !isZoomed);
-              setTarget("store");
-              props.onClick({ value: true, path: "store" });
+              if (!isZoomInClicked) {
+                setIsZoomed((isZoomed) => !isZoomed);
+                setTarget("store");
+                props.onClick({ value: true, path: "store" });
+                isZoomInClicked = true;
+                currentTarget = "store";
+              }
             })
           )!
           .then(
@@ -249,10 +272,14 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                setIsZoomed((isZoomed) => !isZoomed);
-                setIsReturned(true);
-                setTarget("store");
-                props.onClick(false);
+                if (currentTarget === "store") {
+                  setIsZoomed((isZoomed) => !isZoomed);
+                  setIsReturned(true);
+                  setTarget("store");
+                  props.onClick(false);
+                  currentTarget = "";
+                  isZoomInClicked = false;
+                }
               }),
             ])
           );
@@ -262,9 +289,13 @@ function ModelCollection(props: any): React.ReactElement | null {
         meshB.actionManager
           .registerAction(
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
-              setIsZoomed((isZoomed) => !isZoomed);
-              setTarget("store");
-              props.onClick({ value: true, path: "store" });
+              if (!isZoomInClicked) {
+                setIsZoomed((isZoomed) => !isZoomed);
+                setTarget("store");
+                props.onClick({ value: true, path: "store" });
+                isZoomInClicked = true;
+                currentTarget = "store";
+              }
             })
           )!
           .then(
@@ -272,10 +303,14 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                setIsZoomed((isZoomed) => !isZoomed);
-                setIsReturned(true);
-                setTarget("store");
-                props.onClick(false);
+                if (currentTarget === "store") {
+                  setIsZoomed((isZoomed) => !isZoomed);
+                  setIsReturned(true);
+                  setTarget("store");
+                  props.onClick(false);
+                  currentTarget = "";
+                  isZoomInClicked = false;
+                }
               }),
             ])
           );
@@ -298,9 +333,13 @@ function ModelCollection(props: any): React.ReactElement | null {
         meshA.actionManager
           .registerAction(
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
-              setIsZoomed((isZoomed) => !isZoomed);
-              setTarget("miniCity");
-              props.onClick({ value: true, path: "miniCity" });
+              if (!isZoomInClicked) {
+                setIsZoomed((isZoomed) => !isZoomed);
+                setTarget("miniCity");
+                props.onClick({ value: true, path: "miniCity" });
+                isZoomInClicked = true;
+                currentTarget = "miniCity";
+              }
             })
           )!
           .then(
@@ -308,10 +347,14 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                setIsZoomed((isZoomed) => !isZoomed);
-                setIsReturned(true);
-                setTarget("miniCity");
-                props.onClick(false);
+                if (currentTarget === "miniCity") {
+                  setIsZoomed((isZoomed) => !isZoomed);
+                  setIsReturned(true);
+                  setTarget("miniCity");
+                  props.onClick(false);
+                  currentTarget = "";
+                  isZoomInClicked = false;
+                }
               }),
             ])
           );
@@ -321,9 +364,13 @@ function ModelCollection(props: any): React.ReactElement | null {
         meshB.actionManager
           .registerAction(
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
-              setIsZoomed((isZoomed) => !isZoomed);
-              setTarget("miniCity");
-              props.onClick({ value: true, path: "miniCity" });
+              if (!isZoomInClicked) {
+                setIsZoomed((isZoomed) => !isZoomed);
+                setTarget("miniCity");
+                props.onClick({ value: true, path: "miniCity" });
+                isZoomInClicked = true;
+                currentTarget = "miniCity";
+              }
             })
           )!
           .then(
@@ -331,10 +378,14 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                setIsZoomed((isZoomed) => !isZoomed);
-                setIsReturned(true);
-                setTarget("miniCity");
-                props.onClick(false);
+                if (currentTarget === "miniCity") {
+                  setIsZoomed((isZoomed) => !isZoomed);
+                  setIsReturned(true);
+                  setTarget("miniCity");
+                  props.onClick(false);
+                  currentTarget = "";
+                  isZoomInClicked = false;
+                }
               }),
             ])
           );
@@ -367,10 +418,14 @@ function ModelCollection(props: any): React.ReactElement | null {
         meshA.actionManager
           .registerAction(
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
-              setIsZoomed((isZoomed) => !isZoomed);
-              setTarget("house");
-              props.onClick({ value: true, path: "house" });
-              particleSystem.dispose();
+              if (!isZoomInClicked) {
+                setIsZoomed((isZoomed) => !isZoomed);
+                setTarget("house");
+                props.onClick({ value: true, path: "house" });
+                particleSystem.dispose();
+                isZoomInClicked = true;
+                currentTarget = "house";
+              }
             })
           )!
           .then(
@@ -378,10 +433,14 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                setIsZoomed((isZoomed) => !isZoomed);
-                setIsReturned(true);
-                setTarget("house");
-                props.onClick(false);
+                if (currentTarget === "house") {
+                  setIsZoomed((isZoomed) => !isZoomed);
+                  setIsReturned(true);
+                  setTarget("house");
+                  props.onClick(false);
+                  currentTarget = "";
+                  isZoomInClicked = false;
+                }
               }),
             ])
           );
@@ -391,9 +450,13 @@ function ModelCollection(props: any): React.ReactElement | null {
         meshB.actionManager
           .registerAction(
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
-              setIsZoomed((isZoomed) => !isZoomed);
-              setTarget("house");
-              props.onClick({ value: true, path: "house" });
+              if (!isZoomInClicked) {
+                setIsZoomed((isZoomed) => !isZoomed);
+                setTarget("house");
+                props.onClick({ value: true, path: "house" });
+                isZoomInClicked = true;
+                currentTarget = "house";
+              }
             })
           )!
           .then(
@@ -401,10 +464,14 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                setIsZoomed((isZoomed) => !isZoomed);
-                setIsReturned(true);
-                setTarget("house");
-                props.onClick(false);
+                if (currentTarget === "house") {
+                  setIsZoomed((isZoomed) => !isZoomed);
+                  setIsReturned(true);
+                  setTarget("house");
+                  props.onClick(false);
+                  currentTarget = "";
+                  isZoomInClicked = false;
+                }
               }),
             ])
           );

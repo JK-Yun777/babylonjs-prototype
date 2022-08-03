@@ -19,6 +19,7 @@ import Hls from "hls.js";
 import { CustomLoadingScreen } from "../utils";
 import SceneComponent, { scene, engine, camera } from "./Scene";
 import Character from "./Character";
+import BackButton from "./BackButton";
 
 function MainScene(): React.ReactElement | null {
   useEffect(() => {
@@ -149,6 +150,7 @@ function MainScene(): React.ReactElement | null {
   return (
     <>
       <SceneComponent componentName={"modelCollection"} />
+      <BackButton />
       <Character />
     </>
   );
