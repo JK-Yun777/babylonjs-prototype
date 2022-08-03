@@ -138,8 +138,7 @@ function FPV(): React.ReactElement | null {
       }
 
       if (history.action === "POP") {
-        // window.location.replace(location.pathname);
-        window.location.replace("/");
+        window.location.replace(location.pathname);
       }
     });
   }, []);

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useHistory } from "react-router";
 
 import {
   SceneLoader,
@@ -57,7 +58,7 @@ function Booth() {
           //   "video",
           //   video,
           //   scene,
-          //   true,
+          //   false,
           //   true
           // );
           // videoMat.backFaceCulling = true;
@@ -115,6 +116,20 @@ function Booth() {
     return () => {
       scene.dispose();
     };
+  }, []);
+
+  const history = useHistory();
+
+  useEffect(() => {
+    return history.listen((location) => {
+      if (history.action === "PUSH") {
+        history.push(location.pathname);
+      }
+
+      if (history.action === "POP") {
+        window.location.replace(location.pathname);
+      }
+    });
   }, []);
 
   return null;

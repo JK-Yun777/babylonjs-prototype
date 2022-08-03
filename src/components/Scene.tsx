@@ -156,9 +156,14 @@ const SceneComponent = (props: any) => {
         onSceneReady(scene, props.componentName);
       } else {
         scene = new Scene(engine);
-        scene.onReadyObservable.addOnce((scene) =>
-          onSceneReady(scene, props.componentName)
-        );
+
+        if (scene.isReady()) {
+          onSceneReady(scene, props.componentName);
+        }
+
+        // scene.onReadyObservable.add((scene) => {
+        //   onSceneReady(scene, props.componentName);
+        // });
       }
 
       engine.runRenderLoop(() => {

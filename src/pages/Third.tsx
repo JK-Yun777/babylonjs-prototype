@@ -10,8 +10,8 @@ function Third() {
       <SceneComponent componentName={"door"} />
       <Suspense fallback={null}>
         <Booth />
+        <Door />
       </Suspense>
-      <Door />
     </>
   );
 }

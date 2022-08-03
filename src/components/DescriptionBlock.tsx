@@ -5,12 +5,13 @@ import * as GUI from "@babylonjs/gui";
 function DescriptionBlock(props: any) {
   const history = useHistory();
   const path = props.path;
+  const text = props.text;
   const fullScreenUI = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
   useEffect(() => {
     let timer: any;
     if (props.isShow) {
-      timer = setTimeout(() => createDescriptionBlock(), 1000);
+      timer = setTimeout(() => createDescriptionBlock(text), 1000);
     }
 
     return () => {
@@ -19,7 +20,7 @@ function DescriptionBlock(props: any) {
     };
   }, [props]);
 
-  function createDescriptionBlock() {
+  function createDescriptionBlock(text: string) {
     const container = new GUI.Rectangle();
     container.left = "450px";
     container.cornerRadius = 25;
@@ -45,7 +46,7 @@ function DescriptionBlock(props: any) {
     textContainer.addControl(spHeader);
 
     const description = new GUI.TextBlock();
-    description.text = "Hello World";
+    description.text = text;
     description.color = "black";
     description.fontSize = 28;
     description.resizeToFit = true;

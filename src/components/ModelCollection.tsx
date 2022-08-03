@@ -79,21 +79,26 @@ function ModelCollection(props: any): React.ReactElement | null {
 
     movedown_keys.push({
       frame: 1 * frameRate,
-      value: 1.5,
+      value: 1.6,
     });
 
     movedown_keys.push({
       frame: 2 * frameRate,
-      value: 1,
+      value: 1.4,
     });
 
     movedown_keys.push({
       frame: 3 * frameRate,
-      value: 1.1786897756732628,
+      value: 1.3,
     });
 
     movedown_keys.push({
       frame: 4 * frameRate,
+      value: 1.2,
+    });
+
+    movedown_keys.push({
+      frame: 5 * frameRate,
       value: 1.1786897756732628,
     });
 
@@ -131,6 +136,11 @@ function ModelCollection(props: any): React.ReactElement | null {
 
     zoomout_keys.push({
       frame: 4 * frameRate,
+      value: 5,
+    });
+
+    zoomout_keys.push({
+      frame: 5 * frameRate,
       value: 5.5,
     });
 
@@ -144,7 +154,7 @@ function ModelCollection(props: any): React.ReactElement | null {
         camera,
         [zoomout, movedown],
         0,
-        4 * frameRate,
+        5 * frameRate,
         false
       );
     } else {
@@ -172,7 +182,7 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               setIsZoomed((isZoomed) => !isZoomed);
               setTarget("room");
-              props.onClick(true);
+              props.onClick({ value: true, path: "room" });
             })
           )!
           .then(
@@ -195,7 +205,7 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               setIsZoomed((isZoomed) => !isZoomed);
               setTarget("room");
-              props.onClick(true);
+              props.onClick({ value: true, path: "room" });
             })
           )!
           .then(
@@ -231,7 +241,7 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               setIsZoomed((isZoomed) => !isZoomed);
               setTarget("store");
-              props.onClick(true);
+              props.onClick({ value: true, path: "store" });
             })
           )!
           .then(
@@ -254,7 +264,7 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               setIsZoomed((isZoomed) => !isZoomed);
               setTarget("store");
-              props.onClick(true);
+              props.onClick({ value: true, path: "store" });
             })
           )!
           .then(
@@ -290,7 +300,7 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               setIsZoomed((isZoomed) => !isZoomed);
               setTarget("miniCity");
-              props.onClick(true);
+              props.onClick({ value: true, path: "miniCity" });
             })
           )!
           .then(
@@ -313,7 +323,7 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               setIsZoomed((isZoomed) => !isZoomed);
               setTarget("miniCity");
-              props.onClick(true);
+              props.onClick({ value: true, path: "miniCity" });
             })
           )!
           .then(
@@ -359,7 +369,7 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               setIsZoomed((isZoomed) => !isZoomed);
               setTarget("house");
-              props.onClick(true);
+              props.onClick({ value: true, path: "house" });
               particleSystem.dispose();
             })
           )!
@@ -383,7 +393,7 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               setIsZoomed((isZoomed) => !isZoomed);
               setTarget("house");
-              props.onClick(true);
+              props.onClick({ value: true, path: "house" });
             })
           )!
           .then(

@@ -268,6 +268,20 @@ function Video(): React.ReactElement | null {
     };
   }, []);
 
+  const history = useHistory();
+
+  useEffect(() => {
+    return history.listen((location) => {
+      if (history.action === "PUSH") {
+        history.push(location.pathname);
+      }
+
+      if (history.action === "POP") {
+        window.location.replace(location.pathname);
+      }
+    });
+  }, []);
+
   return <SceneComponent componentName={"video"} />;
 }
 

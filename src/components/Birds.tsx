@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 import { SceneLoader, Vector3 } from "@babylonjs/core";
 import "@babylonjs/loaders";
@@ -40,7 +41,7 @@ function Birds() {
       function (meshes, particleSystems, skeletons, animationGroups) {
         const mesh = meshes[0];
         mesh.scaling.scaleInPlace(0.03);
-        mesh.position = new Vector3(-5, 1.5, 2);
+        mesh.position = new Vector3(-5, 1.5, 2.5);
         mesh.rotation = new Vector3(0, -0.7, 0);
 
         let distance = 0;
@@ -87,6 +88,20 @@ function Birds() {
     return () => {
       scene.dispose();
     };
+  }, []);
+
+  const history = useHistory();
+
+  useEffect(() => {
+    return history.listen((location) => {
+      if (history.action === "PUSH") {
+        history.push(location.pathname);
+      }
+
+      if (history.action === "POP") {
+        window.location.replace(location.pathname);
+      }
+    });
   }, []);
   return null;
 }
