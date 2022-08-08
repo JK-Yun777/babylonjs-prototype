@@ -20,6 +20,7 @@ import * as GUI from "@babylonjs/gui";
 import { CustomLoadingScreen } from "../utils";
 import SceneComponent, { scene, camera, engine } from "./Scene";
 import BackButton from "./BackButton";
+import SiteMap from "../components/SiteMap";
 
 function getVideoThumbnail(videoPlayer: any, seekTo = 0) {
   return new Promise((resolve, reject) => {
@@ -289,6 +290,7 @@ function Video(): React.ReactElement | null {
     <>
       <SceneComponent componentName={"video"} />
       <BackButton />
+      <SiteMap componentName={"video"} />
     </>
   );
 }

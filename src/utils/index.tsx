@@ -11,6 +11,7 @@ import {
   Color3,
   EasingFunction,
   CubicEase,
+  ParticleSystem,
 } from "@babylonjs/core";
 
 import * as GUI from "@babylonjs/gui";
@@ -573,27 +574,6 @@ function getReturnAnimations(
   }
 }
 
-function getFadeInAnimations(ref: any) {
-  // description anim
-  console.log(ref);
-  const fadeIn = new Animation(
-    "fade",
-    "alpha",
-    30,
-    Animation.ANIMATIONTYPE_FLOAT
-  );
-
-  const keys = [
-    { frame: 0, value: 0 },
-    { frame: 20, value: 1 },
-  ];
-
-  fadeIn.setEasingFunction(new CubicEase());
-  fadeIn.setKeys(keys);
-
-  return [fadeIn];
-}
-
 export function moveToTargetAnim(camera: any, scene: any, targetName: string) {
   const animations: any = getTargetAnimations(
     camera.radius,
@@ -642,23 +622,6 @@ export function returnToDefaultAnim(
   }
 }
 
-export function fadeInAnim(ref: any, scene: any) {
-  console.log(ref.current);
-  const animations = getFadeInAnimations(ref);
-
-  if (animations) {
-    const anim = scene.beginDirectAnimation(
-      ref,
-      animations,
-      0,
-      25 * frameRate,
-      true
-    );
-
-    return anim;
-  }
-}
-
 export function createSkybox(scene: any) {
   const skybox = MeshBuilder.CreateBox("skyBox", { size: 1000.0 }, scene);
   const skyboxMaterial = new StandardMaterial("skyBox", scene);
@@ -671,4 +634,32 @@ export function createSkybox(scene: any) {
   skyboxMaterial.diffuseColor = new Color3(0, 0, 0);
   skyboxMaterial.specularColor = new Color3(0, 0, 0);
   skybox.material = skyboxMaterial;
+}
+
+export function createParticle(scene: any, options: any) {
+  const {
+    capacity,
+    URL,
+    objectPosition,
+    emitPosition,
+    minEmitBox,
+    maxEmitBox,
+  } = options;
+
+  const particleSystem = new ParticleSystem("particles", capacity, scene);
+  particleSystem.particleTexture = new Texture(URL, scene);
+
+  if (objectPosition) {
+    const box = MeshBuilder.CreateBox("box", {});
+    box.position = objectPosition;
+    box.isVisible = false;
+    particleSystem.emitter = box;
+  } else {
+    particleSystem.emitter = emitPosition;
+  }
+
+  particleSystem.minEmitBox = minEmitBox;
+  particleSystem.maxEmitBox = maxEmitBox;
+
+  return particleSystem;
 }

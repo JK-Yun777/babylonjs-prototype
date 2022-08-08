@@ -12,7 +12,7 @@ import {
 import "@babylonjs/loaders";
 import { useHistory } from "react-router";
 
-import { moveToTargetAnim, returnToDefaultAnim, fadeInAnim } from "../utils";
+import { moveToTargetAnim, returnToDefaultAnim } from "../utils";
 
 import { scene } from "../components/Scene";
 

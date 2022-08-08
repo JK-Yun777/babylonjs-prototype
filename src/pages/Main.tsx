@@ -4,6 +4,8 @@ import DescriptionBlock from "../components/DescriptionBlock";
 import ModelCollection from "../components/ModelCollection";
 import SceneComponent from "../components/Scene";
 import Birds from "../components/Birds";
+import SiteMap from "../components/SiteMap";
+import WeatherButton from "../components/WeatherButton";
 
 function Main() {
   const [isShow, setIsShow] = useState(false);
@@ -44,6 +46,8 @@ function Main() {
     <>
       <SceneComponent componentName={"modelCollection"} />
       <Suspense fallback={null}>
+        <SiteMap componentName={"modelCollection"} />
+        <WeatherButton />
         <ModelCollection onClick={descriptionShowHandler} />
         <Birds />
       </Suspense>

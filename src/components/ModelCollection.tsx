@@ -8,17 +8,52 @@ import {
   ExecuteCodeAction,
   CombineAction,
   SceneLoader,
-  ParticleSystem,
-  Texture,
-  MeshBuilder,
-  Color4,
   Animation,
-  PointerDragBehavior,
 } from "@babylonjs/core";
 import "@babylonjs/loaders";
 
-import { moveToTargetAnim, returnToDefaultAnim } from "../utils";
+import {
+  moveToTargetAnim,
+  returnToDefaultAnim,
+  createParticle,
+} from "../utils";
 import { scene, camera } from "./Scene";
+
+const roomOptions = {
+  URL: "",
+  scale: 0.1,
+  name: "room",
+  position: new Vector3(-1.5, -0.03, 1.5),
+};
+
+const storeOptions = {
+  URL: "",
+  scale: 0.1,
+  name: "store",
+  position: new Vector3(0.5, 0, 0),
+};
+
+const miniCityOptions = {
+  URL: "",
+  scale: 0.1,
+  name: "miniCity",
+  position: new Vector3(0, 0.2, 3),
+};
+
+const houseOptions = {
+  URL: "",
+  scale: 0.3,
+  name: "house",
+  position: new Vector3(0, 0, -2),
+};
+
+const particleOptions = {
+  capacity: 1,
+  URL: "model/smoke.jpg",
+  objectPosition: new Vector3(0.6, 1.2, -2.35),
+  minEmitBox: new Vector3(-0.1, -0.1, -0.1),
+  maxEmitBox: new Vector3(-0.1, -0.1, -0.1),
+};
 
 function ModelCollection(props: any): React.ReactElement | null {
   const [isZoomed, setIsZoomed] = useState(false);
@@ -30,42 +65,12 @@ function ModelCollection(props: any): React.ReactElement | null {
     const glow = new GlowLayer("glow", scene);
     glow.intensity = 0.4;
 
-    // Add snow
-    const particleSystem = new ParticleSystem("particles", 2000, scene);
-
-    particleSystem.particleTexture = new Texture("model/flare.png", scene);
-
-    particleSystem.emitter = new Vector3(0, 10, 0);
-    particleSystem.minEmitBox = new Vector3(10, 10, 10);
-    particleSystem.maxEmitBox = new Vector3(-10, -10, -10);
-
-    particleSystem.color1 = new Color4(1, 1, 1);
-    particleSystem.color2 = new Color4(1, 1, 1);
-    particleSystem.colorDead = new Color4(1, 1, 1);
-
-    particleSystem.minSize = 0;
-    particleSystem.maxSize = 0.2;
-
-    particleSystem.minLifeTime = 4;
-    particleSystem.maxLifeTime = 8;
-
-    particleSystem.emitRate = 200;
-
-    particleSystem.direction1 = new Vector3(1, -1, 1);
-    particleSystem.direction2 = new Vector3(1, -1, 1);
-
-    particleSystem.minEmitPower = 1;
-    particleSystem.maxEmitPower = 1;
-    particleSystem.updateSpeed = 0.003;
-
-    particleSystem.start();
-
     // Add Animation
-    const frameRate = 20;
+    const FRAME_RATE = 20;
     const movedown = new Animation(
       "movedown",
       "beta",
-      frameRate,
+      FRAME_RATE,
       Animation.ANIMATIONTYPE_FLOAT,
       Animation.ANIMATIONLOOPMODE_CONSTANT
     );
@@ -78,27 +83,27 @@ function ModelCollection(props: any): React.ReactElement | null {
     });
 
     movedown_keys.push({
-      frame: 1 * frameRate,
+      frame: 1 * FRAME_RATE,
       value: 1.6,
     });
 
     movedown_keys.push({
-      frame: 2 * frameRate,
+      frame: 2 * FRAME_RATE,
       value: 1.4,
     });
 
     movedown_keys.push({
-      frame: 3 * frameRate,
+      frame: 3 * FRAME_RATE,
       value: 1.3,
     });
 
     movedown_keys.push({
-      frame: 4 * frameRate,
+      frame: 4 * FRAME_RATE,
       value: 1.2,
     });
 
     movedown_keys.push({
-      frame: 5 * frameRate,
+      frame: 5 * FRAME_RATE,
       value: 1.1786897756732628,
     });
 
@@ -107,7 +112,7 @@ function ModelCollection(props: any): React.ReactElement | null {
     const zoomout = new Animation(
       "zoomout",
       "radius",
-      frameRate,
+      FRAME_RATE,
       Animation.ANIMATIONTYPE_FLOAT,
       Animation.ANIMATIONLOOPMODE_CONSTANT
     );
@@ -120,27 +125,27 @@ function ModelCollection(props: any): React.ReactElement | null {
     });
 
     zoomout_keys.push({
-      frame: 1 * frameRate,
+      frame: 1 * FRAME_RATE,
       value: 2,
     });
 
     zoomout_keys.push({
-      frame: 2 * frameRate,
+      frame: 2 * FRAME_RATE,
       value: 3,
     });
 
     zoomout_keys.push({
-      frame: 3 * frameRate,
+      frame: 3 * FRAME_RATE,
       value: 4,
     });
 
     zoomout_keys.push({
-      frame: 4 * frameRate,
+      frame: 4 * FRAME_RATE,
       value: 5,
     });
 
     zoomout_keys.push({
-      frame: 5 * frameRate,
+      frame: 5 * FRAME_RATE,
       value: 5.5,
     });
 
@@ -154,7 +159,7 @@ function ModelCollection(props: any): React.ReactElement | null {
         camera,
         [zoomout, movedown],
         0,
-        5 * frameRate,
+        5 * FRAME_RATE,
         false
       );
     } else {
@@ -167,16 +172,18 @@ function ModelCollection(props: any): React.ReactElement | null {
     let isZoomInClicked = false;
     let currentTarget = "";
 
-    // Add roomWithoutPlane model
+    // Add Room model
     SceneLoader.ImportMesh(
       "",
       "model/",
       "roomWithoutPlane.glb",
       scene,
       function (meshes, particleSystems, skeletons, animationGroups) {
+        const { scale, position, name } = roomOptions;
+
         const model = meshes[0];
-        model.scaling.scaleInPlace(0.1);
-        model.position = new Vector3(-1.5, -0.03, 1.5);
+        model.scaling.scaleInPlace(scale);
+        model.position = position;
 
         const meshA = meshes[1];
         meshA.actionManager = new ActionManager(meshA._scene);
@@ -185,10 +192,10 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               if (!isZoomInClicked) {
                 setIsZoomed((isZoomed) => !isZoomed);
-                setTarget("room");
-                props.onClick({ value: true, path: "room" });
+                setTarget(name);
+                props.onClick({ value: true, path: name });
                 isZoomInClicked = true;
-                currentTarget = "room";
+                currentTarget = name;
               }
             })
           )!
@@ -197,10 +204,10 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                if (currentTarget === "room") {
+                if (currentTarget === name) {
                   setIsZoomed((isZoomed) => !isZoomed);
                   setIsReturned(true);
-                  setTarget("room");
+                  setTarget(name);
                   props.onClick(false);
                   currentTarget = "";
                   isZoomInClicked = false;
@@ -216,10 +223,10 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               if (!isZoomInClicked) {
                 setIsZoomed((isZoomed) => !isZoomed);
-                setTarget("room");
-                props.onClick({ value: true, path: "room" });
+                setTarget(name);
+                props.onClick({ value: true, path: name });
                 isZoomInClicked = true;
-                currentTarget = "room";
+                currentTarget = name;
               }
             })
           )!
@@ -228,10 +235,10 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                if (currentTarget === "room") {
+                if (currentTarget === name) {
                   setIsZoomed((isZoomed) => !isZoomed);
                   setIsReturned(true);
-                  setTarget("room");
+                  setTarget(name);
                   props.onClick(false);
                   currentTarget = "";
                   isZoomInClicked = false;
@@ -242,16 +249,18 @@ function ModelCollection(props: any): React.ReactElement | null {
       }
     )!;
 
-    // Add storeWithoutPlane model
+    // Add Store model
     SceneLoader.ImportMesh(
       "",
       "model/",
       "storeWithoutPlane.glb",
       scene,
       function (meshes, particleSystems, skeletons, animationGroups) {
+        const { scale, position, name } = storeOptions;
+
         const model = meshes[0];
-        model.scaling.scaleInPlace(0.1);
-        model.position = new Vector3(0.5, 0, 0);
+        model.scaling.scaleInPlace(scale);
+        model.position = position;
 
         const meshA = meshes[1];
         meshA.actionManager = new ActionManager(meshA._scene);
@@ -260,10 +269,10 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               if (!isZoomInClicked) {
                 setIsZoomed((isZoomed) => !isZoomed);
-                setTarget("store");
-                props.onClick({ value: true, path: "store" });
+                setTarget(name);
+                props.onClick({ value: true, path: name });
                 isZoomInClicked = true;
-                currentTarget = "store";
+                currentTarget = name;
               }
             })
           )!
@@ -272,10 +281,10 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                if (currentTarget === "store") {
+                if (currentTarget === storeOptions.name) {
                   setIsZoomed((isZoomed) => !isZoomed);
                   setIsReturned(true);
-                  setTarget("store");
+                  setTarget(name);
                   props.onClick(false);
                   currentTarget = "";
                   isZoomInClicked = false;
@@ -291,10 +300,10 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               if (!isZoomInClicked) {
                 setIsZoomed((isZoomed) => !isZoomed);
-                setTarget("store");
-                props.onClick({ value: true, path: "store" });
+                setTarget(name);
+                props.onClick({ value: true, path: name });
                 isZoomInClicked = true;
-                currentTarget = "store";
+                currentTarget = name;
               }
             })
           )!
@@ -303,10 +312,10 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                if (currentTarget === "store") {
+                if (currentTarget === name) {
                   setIsZoomed((isZoomed) => !isZoomed);
                   setIsReturned(true);
-                  setTarget("store");
+                  setTarget(name);
                   props.onClick(false);
                   currentTarget = "";
                   isZoomInClicked = false;
@@ -317,16 +326,18 @@ function ModelCollection(props: any): React.ReactElement | null {
       }
     )!;
 
-    // Add miniCity model
+    // Add MiniCity model
     SceneLoader.ImportMesh(
       "",
       "model/",
       "miniCity.glb",
       scene,
       function (meshes, particleSystems, skeletons, animationGroups) {
+        const { scale, position, name } = miniCityOptions;
+
         const model = meshes[0];
-        model.scaling.scaleInPlace(0.1);
-        model.position = new Vector3(0, 0.2, 3);
+        model.scaling.scaleInPlace(scale);
+        model.position = position;
 
         const meshA = meshes[1];
         meshA.actionManager = new ActionManager(meshA._scene);
@@ -335,10 +346,10 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               if (!isZoomInClicked) {
                 setIsZoomed((isZoomed) => !isZoomed);
-                setTarget("miniCity");
-                props.onClick({ value: true, path: "miniCity" });
+                setTarget(name);
+                props.onClick({ value: true, path: name });
                 isZoomInClicked = true;
-                currentTarget = "miniCity";
+                currentTarget = name;
               }
             })
           )!
@@ -347,10 +358,10 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                if (currentTarget === "miniCity") {
+                if (currentTarget === name) {
                   setIsZoomed((isZoomed) => !isZoomed);
                   setIsReturned(true);
-                  setTarget("miniCity");
+                  setTarget(name);
                   props.onClick(false);
                   currentTarget = "";
                   isZoomInClicked = false;
@@ -366,10 +377,10 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               if (!isZoomInClicked) {
                 setIsZoomed((isZoomed) => !isZoomed);
-                setTarget("miniCity");
-                props.onClick({ value: true, path: "miniCity" });
+                setTarget(name);
+                props.onClick({ value: true, path: name });
                 isZoomInClicked = true;
-                currentTarget = "miniCity";
+                currentTarget = name;
               }
             })
           )!
@@ -378,10 +389,10 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                if (currentTarget === "miniCity") {
+                if (currentTarget === name) {
                   setIsZoomed((isZoomed) => !isZoomed);
                   setIsReturned(true);
-                  setTarget("miniCity");
+                  setTarget(name);
                   props.onClick(false);
                   currentTarget = "";
                   isZoomInClicked = false;
@@ -392,27 +403,21 @@ function ModelCollection(props: any): React.ReactElement | null {
       }
     )!;
 
-    // Add house model
+    // Add House model
     SceneLoader.ImportMesh(
       "",
       "model/",
       "house.glb",
       scene,
       function (meshes, particleSystems, skeletons, animationGroups) {
+        const { scale, position, name } = houseOptions;
+
         const meshA = meshes[0];
-        meshA.scaling.scaleInPlace(0.3);
-        meshA.position = new Vector3(0, 0, -2);
+        meshA.scaling.scaleInPlace(scale);
+        meshA.position = position;
 
-        const box = MeshBuilder.CreateBox("box", {});
-        box.position = new Vector3(0.6, 1.2, -2.35);
-        box.isVisible = false;
-
-        const particleSystem = new ParticleSystem("particles", 1, scene);
-        particleSystem.particleTexture = new Texture("model/smoke.jpg");
-        particleSystem.emitter = box;
-        particleSystem.minEmitBox = new Vector3(-0.1, -0.1, -0.1);
-        particleSystem.maxEmitBox = new Vector3(-0.1, -0.1, -0.1);
-        particleSystem.start();
+        const smoke = createParticle(scene, particleOptions);
+        smoke.start();
 
         meshA.actionManager = new ActionManager(meshA._scene);
         meshA.actionManager
@@ -420,11 +425,10 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               if (!isZoomInClicked) {
                 setIsZoomed((isZoomed) => !isZoomed);
-                setTarget("house");
-                props.onClick({ value: true, path: "house" });
-                particleSystem.dispose();
+                setTarget(name);
+                props.onClick({ value: true, path: name });
                 isZoomInClicked = true;
-                currentTarget = "house";
+                currentTarget = name;
               }
             })
           )!
@@ -433,10 +437,10 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                if (currentTarget === "house") {
+                if (currentTarget === name) {
                   setIsZoomed((isZoomed) => !isZoomed);
                   setIsReturned(true);
-                  setTarget("house");
+                  setTarget(name);
                   props.onClick(false);
                   currentTarget = "";
                   isZoomInClicked = false;
@@ -452,10 +456,10 @@ function ModelCollection(props: any): React.ReactElement | null {
             new ExecuteCodeAction(ActionManager.OnPickTrigger, function (evt) {
               if (!isZoomInClicked) {
                 setIsZoomed((isZoomed) => !isZoomed);
-                setTarget("house");
-                props.onClick({ value: true, path: "house" });
+                setTarget(name);
+                props.onClick({ value: true, path: name });
                 isZoomInClicked = true;
-                currentTarget = "house";
+                currentTarget = name;
               }
             })
           )!
@@ -464,10 +468,10 @@ function ModelCollection(props: any): React.ReactElement | null {
               new ExecuteCodeAction(ActionManager.OnPickTrigger, function (
                 evt
               ) {
-                if (currentTarget === "house") {
+                if (currentTarget === name) {
                   setIsZoomed((isZoomed) => !isZoomed);
                   setIsReturned(true);
-                  setTarget("house");
+                  setTarget(name);
                   props.onClick(false);
                   currentTarget = "";
                   isZoomInClicked = false;

@@ -63,6 +63,8 @@ function SiteMap(props: any) {
     selectBox.thickness = 0;
     selectBox.fontSize = "16px";
     selectBox.paddingTop = "-20px";
+    selectBox.background = "Black";
+    selectBox.color = "White";
     selectBox.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
     selectBox.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
 
@@ -101,9 +103,12 @@ function SiteMap(props: any) {
     const fullScreenUI = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
     const image = createHamburgerMenuHandler(fullScreenUI);
 
-    image.onPointerClickObservable.add(() => {
-      createSelectBoxHandler(fullScreenUI, currentComponent);
-      image.dispose();
+    image.onPointerEnterObservable.add(() => {
+      const selectBox = createSelectBoxHandler(fullScreenUI, currentComponent);
+
+      selectBox.onPointerOutObservable.add(() => {
+        selectBox.dispose();
+      });
     });
 
     return () => {
