@@ -35,6 +35,7 @@ function WeatherButton() {
     snow.minEmitPower = 1;
     snow.maxEmitPower = 1;
     snow.updateSpeed = 0.003;
+    snow.start();
 
     const fullScreenUI = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
     const panel = new GUI.StackPanel();
