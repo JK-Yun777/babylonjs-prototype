@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import * as GUI from "@babylonjs/gui";
+import { scene } from "./Scene";
 
 function SiteMap(props: any) {
   const clickHandler = (num: number) => {
@@ -113,6 +114,7 @@ function SiteMap(props: any) {
 
     return () => {
       fullScreenUI.dispose();
+      scene.dispose();
     };
   }, [currentComponent]);
 
