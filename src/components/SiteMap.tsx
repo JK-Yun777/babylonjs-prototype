@@ -21,12 +21,12 @@ const clickHandler = (num: number) => {
       break;
 
     case 4:
-      window.location.replace("/video");
-      break;
-
-    case 5:
       window.location.replace("/village");
       break;
+
+    // case 5:
+    //   window.location.replace("/video");
+    //   break;
   }
 };
 
@@ -55,8 +55,8 @@ const createSelectBoxHandler = (
   siteMap.addRadio("FPV", clickHandler);
   siteMap.addRadio("Door", clickHandler);
   siteMap.addRadio("Main", clickHandler);
-  siteMap.addRadio("video", clickHandler);
-  siteMap.addRadio("village", clickHandler);
+  // siteMap.addRadio("video", clickHandler);
+  siteMap.addRadio("Village", clickHandler);
 
   siteMap._setSelectorButtonBackground(currentComponent, "skyblue");
   siteMap._setSelectorButtonColor(currentComponent, "skyblue");
@@ -98,13 +98,13 @@ function SiteMap(props: any) {
         setCurrentComponent(3);
         break;
 
-      case "video":
+      case "village":
         setCurrentComponent(4);
         break;
 
-      case "village":
-        setCurrentComponent(5);
-        break;
+      // case "video":
+      //   setCurrentComponent(5);
+      //   break;
     }
   }, [props, currentComponent]);
 

@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 
 import SceneComponent, { scene } from "../components/Scene";
 import BackButton from "../components/BackButton";
@@ -6,24 +6,28 @@ import SiteMap from "../components/SiteMap";
 import Village from "../components/Village";
 import NPC from "../components/NPC";
 import ModalPortal from "../components/Portal";
-import Avatar from "../components/Avatar";
+import TargetNPC from "../components/TargetNPC";
 
 function Fifth() {
   const [isShow, setIsShow] = useState(false);
+  const [NPCName, setNPCName] = useState("");
 
-  const openModalHandler = (value: any) => {
+  const openModalHandler = (args: any) => {
+    const { value, NPCName } = args;
+
     if (value) {
-      console.log("Open!!", value);
       setIsShow(true);
+      setNPCName(() => NPCName);
     }
   };
 
   const closeModalHandler = (value: any) => {
     if (!value) {
-      console.log("close!!", value);
       setIsShow(false);
+      setNPCName("");
     }
   };
+
   return (
     <>
       <SceneComponent componentName={"village"} />
@@ -36,7 +40,7 @@ function Fifth() {
 
       {isShow && (
         <ModalPortal isShow={isShow}>
-          <Avatar onClick={closeModalHandler} />
+          <TargetNPC onClick={closeModalHandler} name={NPCName} />
         </ModalPortal>
       )}
     </>

@@ -16,8 +16,8 @@ function App() {
           <Route path="/fpv" exact component={Sub} />
           <Route path="/door" exact component={Third} />
           <Route path="/main" exact component={Fourth} />
-          <Route path="/video" exact component={Video} />
           <Route path="/village" exact component={Fifth} />
+          {/* <Route path="/video" exact component={Video} /> */}
         </Switch>
       </BrowserRouter>
     </>

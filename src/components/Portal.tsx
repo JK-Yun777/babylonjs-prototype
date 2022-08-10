@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import ReactDom from "react-dom";
+import { createPortal } from "react-dom";
 
 const ModalPortal = ({ isShow, children }: any) => {
   const el = document.getElementById("modal")!;
@@ -12,9 +12,9 @@ const ModalPortal = ({ isShow, children }: any) => {
     return () => {
       el.style.visibility = "hidden";
     };
-  }, [isShow, el.style]);
+  }, []);
 
-  return ReactDom.createPortal(children, el);
+  return createPortal(children, el);
 };
 
 export default ModalPortal;

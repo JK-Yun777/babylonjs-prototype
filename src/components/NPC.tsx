@@ -7,20 +7,22 @@ import { scene } from "./Scene";
 
 const Amy = {
   URL: "",
+  name: "Amy",
   scale: 0.3,
   position: new Vector3(0, 0, 0),
   panelPosition: new Vector3(0.2, 0.4, 0),
   rotation: Vector3.Zero(),
-  buttonText: "Meet Amy",
+  buttonText: "Detail",
 };
 
-const AJ = {
+const Michelle = {
   URL: "",
+  name: "Michelle",
   scale: 0.24,
   position: new Vector3(-1, 0, 2),
   panelPosition: new Vector3(-1.2, 0.4, 2),
   rotation: Vector3.Zero(),
-  buttonText: "Meet AJ",
+  buttonText: "Detail",
 };
 
 function create3DButton(text: string, position: Vector3) {
@@ -42,7 +44,7 @@ function create3DButton(text: string, position: Vector3) {
   text1.fontSize = 50;
   button.content = text1;
 
-  return { manager, button };
+  return button;
 }
 
 function NPC(props: any) {
@@ -53,18 +55,18 @@ function NPC(props: any) {
       "Amy_Greeting.glb",
       scene,
       function (meshes, particleSystems, skeletons, animationGroups) {
-        const { scale, position, panelPosition, rotation, buttonText } = Amy;
+        const { name, scale, position, panelPosition, rotation, buttonText } =
+          Amy;
 
         const model = meshes[0];
         model.scaling.scaleInPlace(scale);
         model.rotation = rotation;
         model.position = position;
 
-        const { manager, button } = create3DButton(buttonText, panelPosition);
+        const button = create3DButton(buttonText, panelPosition);
 
         button.onPointerUpObservable.add(function () {
-          props.onClick(true);
-          manager.dispose();
+          props.onClick({ value: true, NPCName: name });
         });
       }
     );
@@ -72,21 +74,21 @@ function NPC(props: any) {
     SceneLoader.ImportMesh(
       "",
       "model/",
-      "AJ_Greeting.glb",
+      "Michelle_Greeting.glb",
       scene,
       function (meshes, particleSystems, skeletons, animationGroups) {
-        const { scale, position, panelPosition, rotation, buttonText } = AJ;
+        const { name, scale, position, panelPosition, rotation, buttonText } =
+          Michelle;
 
         const model = meshes[0];
         model.scaling.scaleInPlace(scale);
         model.rotation = rotation;
         model.position = position;
 
-        const { manager, button } = create3DButton(buttonText, panelPosition);
+        const button = create3DButton(buttonText, panelPosition);
 
         button.onPointerUpObservable.add(function () {
-          props.onClick(true);
-          manager.dispose();
+          props.onClick({ value: true, NPCName: name });
         });
       }
     );
