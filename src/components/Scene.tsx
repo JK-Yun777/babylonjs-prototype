@@ -25,9 +25,11 @@ export let camera: any;
 window.CANNON = CANNON;
 const gravityVector = new Vector3(0, -9.81, 0);
 
-scene.clearColor = Color4.FromColor3(Color3.FromHexString("#f7f6f0"));
-scene.enablePhysics(gravityVector, new CannonJSPlugin());
-scene.collisionsEnabled = true;
+if (scene) {
+  scene.clearColor = Color4.FromColor3(Color3.FromHexString("#f7f6f0"));
+  scene.enablePhysics(gravityVector, new CannonJSPlugin());
+  scene.collisionsEnabled = true;
+}
 
 const onSceneReady = (scene: any, name: string) => {
   if (name === "modelCollection") {
@@ -133,6 +135,31 @@ const onSceneReady = (scene: any, name: string) => {
     createSkybox(scene);
   }
 
+  if (name === "village") {
+    camera = new ArcRotateCamera(
+      "villageCam",
+      2.7 + Math.PI / 2.2,
+      5 + Math.PI / 2.2,
+      13,
+      Vector3.Zero()
+    );
+    camera.wheelDeltaPercentage = 0.01;
+
+    camera.angularSensibilityX = 5000;
+    camera.angularSensibilityY = 5000;
+
+    camera.upperBetaLimit = Math.PI / 2.2;
+    camera.lowerRadiusLimit = 2;
+    camera.upperRadiusLimit = 15;
+
+    camera.useBouncingBehavior = true;
+
+    const light = new HemisphericLight("light", new Vector3(0, 1, 0), scene);
+    light.intensity = 1.5;
+
+    createSkybox(scene);
+  }
+
   const canvas = scene.getEngine().getRenderingCanvas();
   camera.attachControl(canvas, true);
 };
@@ -147,8 +174,6 @@ const onRender = (scene: any) => {
 };
 const SceneComponent = (props: any) => {
   const [canvas, setCanvas] = useState(canvasEl);
-  scene.clearColor = Color4.FromColor3(Color3.FromHexString("#f7f6f0"));
-  scene.enablePhysics(gravityVector, new CannonJSPlugin());
 
   useEffect(() => {
     if (canvas) {

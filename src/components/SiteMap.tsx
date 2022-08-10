@@ -23,6 +23,10 @@ const clickHandler = (num: number) => {
     case 4:
       window.location.replace("/video");
       break;
+
+    case 5:
+      window.location.replace("/village");
+      break;
   }
 };
 
@@ -52,6 +56,7 @@ const createSelectBoxHandler = (
   siteMap.addRadio("Door", clickHandler);
   siteMap.addRadio("Main", clickHandler);
   siteMap.addRadio("video", clickHandler);
+  siteMap.addRadio("village", clickHandler);
 
   siteMap._setSelectorButtonBackground(currentComponent, "skyblue");
   siteMap._setSelectorButtonColor(currentComponent, "skyblue");
@@ -95,6 +100,10 @@ function SiteMap(props: any) {
 
       case "video":
         setCurrentComponent(4);
+        break;
+
+      case "village":
+        setCurrentComponent(5);
         break;
     }
   }, [props, currentComponent]);
